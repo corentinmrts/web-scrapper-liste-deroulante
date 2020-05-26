@@ -1,4 +1,5 @@
 import re
+import pandas as pd
 
 # On importe le string avec les data qui nous intéressent
 raw_string = """<option id="catalyst_affiliateid_"  value="684">.CO</option>
@@ -519,3 +520,15 @@ elements = re.split("""<option id="catalyst_affiliateid__[0-9]*"  value="[0-9]*"
 # On itère pour traîter les données et les stocker dans la "liste_finale"
 for element in elements:
     liste_finale.append(element.replace("</option>\n", ""))
+
+# dataframe Name and Age columns
+df = pd.DataFrame({'Affiliates': liste_finale})
+
+# Create a Pandas Excel writer using XlsxWriter as the engine.
+writer = pd.ExcelWriter('Affiliates Startup with IBM.xlsx', engine='xlsxwriter')
+
+# Convert the dataframe to an XlsxWriter Excel object.
+df.to_excel(writer, sheet_name='Sheet1', index=False)
+
+# Close the Pandas Excel writer and output the Excel file.
+writer.save()
